@@ -1,6 +1,6 @@
 import {hash, verify} from 'argon2';
 import Usuario from '../users/user.model.js';
-import { generarJWT } from '../helpers/generate-JWT.js';
+import { generarJWT } from '../helpers/generate-jwt.js';
 
 export const login = async(req, res) => {
     const { email, password, username } = req.body;
