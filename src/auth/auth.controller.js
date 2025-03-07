@@ -1,41 +1,44 @@
 import {hash, verify} from 'argon2';
 import Usuario from '../users/user.model.js';
-import { generarJWT } from '../helpers/generate-jwt.js';
+import { generarJWT } from '../helpers/generate-JWT.js';
 
 export const login = async(req, res) => {
+    
     const { email, password, username } = req.body;
 
     try {
-        
         const user = await Usuario.findOne({
             $or: [
-                {email}, {username}
+                {username}
             ]
         })
-
+        if(req.body.email){
+            return res.status(400).json({
+                msg: 'Solo se puede iniciar sesion con el Nombre de usuario'
+            })
+        }
         if (!user) {
             return res.status(400).json({
-                msg: 'Credenciales incorrectas, Correo no existe en la base de datos'
+                msg: 'Credenciales incorrectas, Este usuario no se encuentra en la base de datos'
             });
         }
-
         if (!user.state) {
             return res.status(400).json({
-                msg: 'El usuario no existe en la base de datos'
+                msg: 'Este usuario no se encuentra en la base de datos'
             })
         }
 
         const validPassword = await verify(user.password, password);
         if(!validPassword){
             return res.status(400).json({
-                msg: 'La contraseña es incorrecta, bobo'
+                msg: 'Credenciales incorrectas, contraseña incorrecta'
             })
         }
 
         const token = await generarJWT(user.id);
 
         res.status(200).json({
-            msg: 'Inicio de sesion exitoso!',
+            msg: 'Se ha iniciado sesion correctamente',
             userDetails: {
                 username: user.username,
                 token: token,
@@ -55,11 +58,7 @@ export const login = async(req, res) => {
 export const register = async(req, res) => {
     try {
         const data = req.body;
-
-        let profilePicture = req.file ? req.file.filename : null;
-
         const encryptedPassword = await hash(data.password);
-
         const user = await Usuario.create({
             name: data.name,
             surname: data.surname,
@@ -67,11 +66,11 @@ export const register = async(req, res) => {
             email: data.email,
             phone: data.phone,
             password: encryptedPassword,
-            role: data.role,
+            role: data.role
         })
 
         return res.status(201).json({
-            message: "User registered successfully",
+            message: "Se registro el usuario correctamente",
             userDetails: {
                 user: user.email
             }
@@ -79,7 +78,7 @@ export const register = async(req, res) => {
     } catch (error) {
         console.log(error);
         return res.status(500).json({
-            message: "User registration failed",
+            message: "Error al registrar el usuario",
             error: error.message
         })
     }
