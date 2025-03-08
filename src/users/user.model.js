@@ -35,6 +35,10 @@ const UserSchema = Schema({
         enum: ['ADMIN_ROLE', 'CLIENT_ROLE'],
         default: 'CLIENT_ROLE'
     },
+    state: {
+        type: Boolean,
+        default: true
+    }
 }, {
     timeStamps: true,
     versionKey: false
@@ -46,4 +50,4 @@ UserSchema.methods.toJSON = function(){
     return usuario;
 }
 
-export default model ('User', UserSchema);
+export default model ('Usuario', UserSchema);

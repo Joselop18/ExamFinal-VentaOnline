@@ -1,4 +1,4 @@
-import User from "../users/user.model.js";
+import user from "../users/user.model.js";
 
 export const deleteRestricted = async(req, res, next) => {
     const { id } = req.params;
