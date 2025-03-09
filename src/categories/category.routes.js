@@ -1,41 +1,37 @@
-import { Router } from 'express';
-import { saveCategories, getCategories, deleteCategory, updateCategory } from './category.controller.js';
-import { onlyAdminCategoria } from '../middlewares/validar-categoria.js'
-import { validarCampos } from '../middlewares/validar-campos.js';
+import { Router } from "express";
+import { createCategory, getCategories, updateCategory, deleteCategory } from "../categories/category.controller.js";
 import { validarJWT } from "../middlewares/validar-jwt.js";
+import { validarRol } from "../middlewares/validar-roles.js";
 
 const router = Router();
 
 router.post(
-    '/submit',
+    "/",
     [
-        validarJWT,
-        onlyAdminCategoria,
-        validarCampos
+    validarJWT,
+    validarRol("ADMIN_ROLE")
     ],
-    saveCategories
-)
+    createCategory
+);
 
-router.get('/', getCategories)
-
-router.delete(
-    '/:id',
-    [
-        validarJWT,
-        onlyAdminCategoria,
-        validarCampos,
-    ],
-    deleteCategory
-)
+router.get("/", getCategories);
 
 router.put(
-    '/:id',
+    "/:id",
     [
         validarJWT,
-        onlyAdminCategoria,
-        validarCampos
+        validarRol("ADMIN_ROLE")
     ],
     updateCategory
-)
+);
+
+router.delete(
+    "/:id", 
+    [
+        validarJWT,
+        validarRol("ADMIN_ROLE")
+    ],
+    deleteCategory
+    );
 
 export default router;

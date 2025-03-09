@@ -8,12 +8,10 @@ const UserSchema = Schema({
     surname: {
         type: String,
         required: [true, 'Apellido obligatorio'],
-        unique: true
     },
     username: {
         type: String,
         required: [true, 'Nombre de usuario obligatorio'],
-        unique: true
     },
     email: {
         type: String,
@@ -27,7 +25,8 @@ const UserSchema = Schema({
     phone: {
         type: String,
         minLenght: 8,
-        maxLenght: 8
+        maxLenght: 8,
+        required: [true, 'El numero de telefono es obligatorio']
     },
     role: {
         type: String,
@@ -35,7 +34,7 @@ const UserSchema = Schema({
         enum: ['ADMIN_ROLE', 'CLIENT_ROLE'],
         default: 'CLIENT_ROLE'
     },
-    state: {
+    estado: {
         type: Boolean,
         default: true
     }

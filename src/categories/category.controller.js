@@ -1,92 +1,82 @@
-import Category from "./category.model.js";
+import Category from "../categories/category.model.js"
+import Product from "../products/product.model.js"
 
-export const saveCategories = async(req, res) => {
+export const createCategory = async (req, res) => {
     try {
-        const data = req.body;
-        const category = new Category({
-            nombre: data.nombre,
-            descripcion: data.descripcion
-        });
-
+        const { name } = req.body;
+        const category = new Category({ name });
         await category.save();
 
+        res.status(201).json({
+            success: true,
+            message: "Se creo la categoria correctamente",
+            category
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "No se pudo crear la categoria",
+            error
+        });
+    }
+};
+
+export const getCategories = async (req, res) => {
+    try {
+        const categories = await Category.find({ status: true });
         res.status(200).json({
             success: true,
-            msg: "Se pudo agregar la categoria con exito",
-            category
-        })
-
+            categories
+        });
     } catch (error) {
-        return res.status(500).json({
+        res.status(500).json({
             success: false,
-            msg: "No se pudo agregar la categoria",
-            error: error.message || error
-        })
+            message: "No se pudo obtener las categorías",
+            error
+        });
     }
-}
+};
 
-export const getCategories = async(req, res) => {
-    const query = { state: true }
-    try {
-        const [total, category] = await Promise.all([
-            Category.countDocuments(query),
-            Category.find(query)
-        ]);
-
-        return res.status(200).json({
-            success: true,
-            msg: "Se pudo obtner las categorias con exito",
-            total,
-            category
-        })
-    } catch (error) {
-        return res.status(500).json({
-            success: false,
-            msg: "No se pudo obtener las categorias",
-            error: error.message || error
-        })
-    }
-}
-
-export const deleteCategory = async(req, res) => {
+export const updateCategory = async (req, res) => {
     try {
         const { id } = req.params;
-        const categoryDefecto = await Category.findOne({ nombre: "Casa"})
-        await Producto.updateMany(
-            { category: id },
-            { category: categoryDefecto._id }
-        )
-
-        const category = await Category.findByIdAndDelete(id);
+        const { name } = req.body;
+        const category = await Category.findByIdAndUpdate(id, { name }, { new: true });
         res.status(200).json({
             success: true,
-            msg: "Se elimino la categoria con exito",
+            message: "Se actualizo la categoria correctamente",
             category
-        })
+        });
     } catch (error) {
-        return res.status(500).json({
+        res.status(500).json({
             success: false,
-            msg: "No se pudo eliminar la categoria",
-            error: error.message || error
-        })
+            message: "No se pudo actualizar la categoria",
+            error
+        });
     }
-}
+};
 
-export const updateCategory = async(req, res) => {
+export const deleteCategory = async (req, res) => {
     try {
         const { id } = req.params;
-        const { _id, ...data } = req.body;
-        const updateCategory = await Category.findByIdAndUpdate(id, data, {new: true});
+        const defaultCategory = await Category.findOne({ name: "General" });
+        if (!defaultCategory) {
+            return res.status(500).json({
+                success: false,
+                message: "La categoría por defecto no se pudo encontrar"
+            });
+        }
+        await Product.updateMany({ category: id }, { category: defaultCategory._id });
+        await Category.findByIdAndUpdate(id, { status: false });
         res.status(200).json({
             success: true,
-            msg: "Se pudo actualizar la categoria con exito",
-            category: updateCategory
-        })
+            message: "La categoria se pudo eliminar correctamente"
+        });
     } catch (error) {
-        return res.status(500).json({
+        res.status(500).json({
             success: false,
-            msg: "No se pudo actualizar la categoria",
-            error: error.message || error
-        })
+            message: "No se pudo eliminar la categoria",
+            error: error.message 
+        });
     }
-}
+};

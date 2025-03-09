@@ -1,85 +1,83 @@
-import {hash, verify} from 'argon2';
+import {hash, verify} from "argon2";
 import Usuario from '../users/user.model.js';
-import { generarJWT } from '../helpers/generate-JWT.js';
+import { generarJWT } from '../helpers/generate-jwt.js';
 
-export const login = async(req, res) => {
-    
-    const { email, password, username } = req.body;
-
+export const login = async (req, res) => {
+    const {email, password, username} = req.body;
     try {
         const user = await Usuario.findOne({
-            $or: [
-                {username}
-            ]
+            $or: [{email},{username}]
         })
-        if(req.body.email){
+        if(!user){
             return res.status(400).json({
-                msg: 'Solo se puede iniciar sesion con el Nombre de usuario'
-            })
-        }
-        if (!user) {
-            return res.status(400).json({
-                msg: 'Credenciales incorrectas, Este usuario no se encuentra en la base de datos'
+                msg: "Este correo no existe en la base de datos"
             });
         }
-        if (!user.state) {
+        if(!user.estado){
             return res.status(400).json({
-                msg: 'Este usuario no se encuentra en la base de datos'
-            })
+                msg: "Este usuario no se encuentra activo"
+            }); 
         }
 
         const validPassword = await verify(user.password, password);
         if(!validPassword){
             return res.status(400).json({
-                msg: 'Credenciales incorrectas, contraseña incorrecta'
+                msg: "Esta contraseña es incorrecta"
             })
         }
 
         const token = await generarJWT(user.id);
-
         res.status(200).json({
-            msg: 'Se ha iniciado sesion correctamente',
+            msg: "Se pudo iniciar sesión correctamente",
             userDetails: {
                 username: user.username,
-                token: token,
-                profilePicture: user.profilePicture
+                token: token
             }
         })
-
-    } catch (e) {
+    } catch (error) {
         console.log(e);
         res.status(500).json({
-            message: "Server error",
+            msg: 'Server Error',
             error: e.message
         })
     }
 }
 
-export const register = async(req, res) => {
+export const register = async (req, res) => {
     try {
-        const data = req.body;
-        const encryptedPassword = await hash(data.password);
+        const { name, surname, username, email, phone, password } = req.body; 
+        const existingUser = await Usuario.findOne({
+            $or: [{ email }, { username }]
+        });
+        if (existingUser) {
+            return res.status(400).json({
+                msg: "Este correo o nombre de usuario ya existe en la base de datos"
+            });
+        }
+
+        const userRole = "CLIENT_ROLE"; 
+        const encryptedPassword = await hash(password);
         const user = await Usuario.create({
-            name: data.name,
-            surname: data.surname,
-            username: data.username,
-            email: data.email,
-            phone: data.phone,
+            name,
+            surname,
+            username,
+            email,
+            phone,
             password: encryptedPassword,
-            role: data.role
-        })
+            role: userRole 
+        });
 
         return res.status(201).json({
-            message: "Se registro el usuario correctamente",
+            message: "El Usuario se ha registrado con éxito",
             userDetails: {
                 user: user.email
             }
-        })
+        });
     } catch (error) {
         console.log(error);
         return res.status(500).json({
-            message: "Error al registrar el usuario",
+            message: "No se pudo registrar el usuario",
             error: error.message
-        })
+        });
     }
-}
+};
