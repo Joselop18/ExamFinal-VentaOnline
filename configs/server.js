@@ -13,6 +13,7 @@ import authRoutes from '../src/auth/auth.routes.js'
 import userRoutes from "../src/users/user.routes.js"
 import categoryRoutes from "../src/categories/category.routes.js"
 import productRoutes from "../src/products/product.routes.js"
+import cartRoutes from "../src/salescart/salescart.routes.js"
 
 const configurarMiddlewares = (app) => {
     app.use(express.urlencoded({extended: false}));
@@ -28,6 +29,7 @@ const configurarRutas = (app) =>{
         app.use("/onlineSale/v1/usuarios", userRoutes);
         app.use("/onlineSale/v1/categorias", categoryRoutes);
         app.use("/onlineSale/v1/productos", productRoutes);
+        app.use("/onlineSale/v1/carrito", cartRoutes);
 }
 
 const crearAdmin = async () => {
@@ -45,12 +47,12 @@ const crearAdmin = async () => {
                 role: "ADMIN_ROLE"
             });
             await admin.save(); 
-            console.log("Se creo el administrador correctamente.");
+            console.log("Se creo el administrador correctamente");
         } else {
-            console.log("Este administrador ya existe.");
+            console.log("Este administrador ya existe");
         }
     } catch (error) {
-        console.error("No se pudo creal al administrado: ", error);
+        console.error("No se pudo crear al administrador: ", error);
     }
 };
 
