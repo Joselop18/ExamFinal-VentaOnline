@@ -14,6 +14,7 @@ import userRoutes from "../src/users/user.routes.js"
 import categoryRoutes from "../src/categories/category.routes.js"
 import productRoutes from "../src/products/product.routes.js"
 import cartRoutes from "../src/salescart/salescart.routes.js"
+import invoiceRoutes from "../src/invoices/invoice.routes.js"
 
 const configurarMiddlewares = (app) => {
     app.use(express.urlencoded({extended: false}));
@@ -25,11 +26,12 @@ const configurarMiddlewares = (app) => {
 }
 
 const configurarRutas = (app) =>{
-        app.use("/onlineSale/v1/auth", authRoutes);
-        app.use("/onlineSale/v1/usuarios", userRoutes);
-        app.use("/onlineSale/v1/categorias", categoryRoutes);
-        app.use("/onlineSale/v1/productos", productRoutes);
-        app.use("/onlineSale/v1/carrito", cartRoutes);
+        app.use("/onlineVentas/v1/auth", authRoutes);
+        app.use("/onlineVentas/v1/usuarios", userRoutes);
+        app.use("/onlineVentas/v1/categorias", categoryRoutes);
+        app.use("/onlineVentas/v1/productos", productRoutes);
+        app.use("/onlineVentas/v1/carrito", cartRoutes);
+        app.use("/onlineVentas/v1/facturas", invoiceRoutes);
 }
 
 const crearAdmin = async () => {

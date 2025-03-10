@@ -51,7 +51,7 @@ export const register = async (req, res) => {
         });
         if (existingUser) {
             return res.status(400).json({
-                msg: "Este correo o nombre de usuario ya existe en la base de datos"
+                msg: "Nombre de usuario ya existe en la base de datos"
             });
         }
 
@@ -70,7 +70,7 @@ export const register = async (req, res) => {
         return res.status(201).json({
             message: "El Usuario se ha registrado con éxito",
             userDetails: {
-                user: user.email
+                user: user.name
             }
         });
     } catch (error) {
