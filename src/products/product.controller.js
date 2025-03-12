@@ -4,8 +4,8 @@ import User from "../users/user.model.js";
 
 export const saveProduct = async (req, res) => {
     try {
-        const { name, description, price, category, stock } = req.body;
-        const categoryExists = await Category.findById(category);
+        const { nameCategory, ...data } = req.body;
+        const categoryExists = await Category.findOne({name: nameCategory});
         if (!categoryExists) {
             return res.status(400).json({
                 success: false,
@@ -13,11 +13,11 @@ export const saveProduct = async (req, res) => {
             });
         }
         const product = new Product({
-            name,
-            description,
-            price,
-            category,
-            stock,
+            name: data.name,
+            description: data.description,
+            price: data.price,
+            category: categoryExists._id,
+            stock: data.stock,
             status: true
         });
         await product.save();
@@ -63,7 +63,7 @@ export const getProducts = async (req, res) => {
         res.status(500).json({
             success: false,
             message: "No se pudo obtner los productos",
-            error
+            error: error.message
         });
     }
 };

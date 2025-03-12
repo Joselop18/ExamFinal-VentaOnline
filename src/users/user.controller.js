@@ -2,6 +2,30 @@ import { response, request } from "express";
 import { hash } from "argon2";
 import User from "./user.model.js";
 
+export const crearAdmin = async () => {
+    try {
+        const adminExistente = await User.findOne({ email: "admin@gmail.com" });
+        if (!adminExistente) {
+            const passwordEncriptada = await hash("Admin002");
+            const admin = new User({
+                name: "Admin",
+                surname: "Dueño",
+                username: "El Jefe",
+                email: "admin@gmail.com",
+                phone: "45679874",
+                password: passwordEncriptada,
+                role: "ADMIN_ROLE"
+            });
+            await admin.save(); 
+            console.log("Se creo el administrador correctamente");
+        } else {
+            console.log("Este administrador ya existe");
+        }
+    } catch (error) {
+        console.error("No se pudo crear al administrador: ", error);
+    }
+};
+
 export const getUsers = async (req = request, res = response) => {
     try {
         const { limite = 10, desde = 0 } = req.query;

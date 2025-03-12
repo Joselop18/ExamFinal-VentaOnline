@@ -33,26 +33,28 @@ export const addToCart = async (req, res) => {
     if (!Array.isArray(products) || products.length === 0) {
         return res.status(400).json({
             success: false,
-            message: "Se tiene que agregar un producto como minimo"
+            message: "Se tiene que agregar un producto como mínimo"
         });
     }
     try {
         let cart = await Cart.findOne({ user: req.usuario._id });
         if (!cart) {
-            cart = new Cart({ user: req.usuario._id, products: [] });
+            cart = new Cart({ user: req.usuario._id, products: [], totalPrice: 0 });
         }
+        let totalPrice = cart.totalPrice || 0;
+
         for (const { productId, quantity } of products) {
             const product = await Product.findById(productId);
             if (!product) {
-                return res.status(404).json({ 
-                    success: false, 
-                    message: `El producto con Id ${productId} no se ha encontrado` 
+                return res.status(404).json({
+                    success: false,
+                    message: `El producto con Id ${productId} no se ha encontrado`
                 });
             }
             if (product.stock < quantity) {
-                return res.status(400).json({ 
-                    success: false, 
-                    message: `El producto tiene un stock insuficiente ${product.name}` 
+                return res.status(400).json({
+                    success: false,
+                    message: `El producto tiene un stock insuficiente: ${product.name}`
                 });
             }
 
@@ -64,28 +66,35 @@ export const addToCart = async (req, res) => {
                 if (newQuantity > product.stock) {
                     return res.status(400).json({
                         success: false,
-                        message: `Imposible agregar mas productos ${product.name}`
+                        message: `Imposible agregar más productos: ${product.name}`
                     });
                 }
                 cart.products[productIndex].quantity = newQuantity;
             } else {
-                cart.products.push({ product: productId, quantity });
+                cart.products.push({ 
+                    product: productId, 
+                    quantity, 
+                    price: product.price
+                });
             }
             product.stock -= quantity;
+            totalPrice += product.price * quantity;
             await product.save();
         }
+
+        cart.totalPrice = totalPrice;
         await cart.save();
 
-        res.status(200).json({ 
+        res.status(200).json({
             success: true,
             message: "Se agregaron productos al carrito",
-            cart 
+            cart
         });
     } catch (error) {
-        res.status(500).json({ 
+        res.status(500).json({
             success: false,
-            message: "No se pudo agregar productos al carrito", 
-            error 
+            message: "No se pudo agregar productos al carrito",
+            error
         });
     }
 };

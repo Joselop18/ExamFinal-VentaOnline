@@ -1,6 +1,20 @@
 import Category from "../categories/category.model.js"
 import Product from "../products/product.model.js"
 
+export const initializeCategories = async () => {
+    try {
+        const defaultCategory = await Category.findOne({ name: "General" });
+        if (!defaultCategory) {
+            await Category.create({ name: "General" });
+            console.log("Categoría por defecto creada: General");
+        } else {
+            console.log("Categoría por defecto ya existente");
+        }
+    } catch (error) {
+        console.error("Error al inicializar categorías:", error);
+    }
+};
+
 export const createCategory = async (req, res) => {
     try {
         const { name } = req.body;

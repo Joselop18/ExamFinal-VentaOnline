@@ -1,0 +1,22 @@
+[{
+  "_id": {
+    "$oid": "67d0cad329cb49317a7c9e6e"
+  },
+  "user": {
+    "$oid": "67d0b6fe8b55788bab6bcec5"
+  },
+  "products": [],
+  "totalPrice": 500,
+  "__v": 3
+},
+{
+  "_id": {
+    "$oid": "67d0cbe429cb49317a7c9e84"
+  },
+  "user": {
+    "$oid": "67d0b7c383e6a4d9ecf5c22a"
+  },
+  "products": [],
+  "totalPrice": 500,
+  "__v": 3
+}]

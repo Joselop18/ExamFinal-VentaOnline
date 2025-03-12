@@ -3,14 +3,14 @@ import mongoose from "mongoose";
 const InvoiceSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User", 
+        ref: "Usuario", 
         required: true
     },
     products: [
         {
             product: {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: "Product",
+                ref: "Producto",
                 required: true
             },
             quantity: {

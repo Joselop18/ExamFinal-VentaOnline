@@ -1,0 +1,104 @@
+[{
+  "_id": {
+    "$oid": "67d0cdc9d1a02ebe59a46f6c"
+  },
+  "user": {
+    "$oid": "67d0b7c383e6a4d9ecf5c22a"
+  },
+  "products": [
+    {
+      "product": {
+        "$oid": "67d0c3aad76626af5dc0170b"
+      },
+      "quantity": 2,
+      "_id": {
+        "$oid": "67d0cdc9d1a02ebe59a46f6d"
+      }
+    }
+  ],
+  "total": 100,
+  "status": "pendiente",
+  "shippingAddress": "casa mia",
+  "date": {
+    "$date": "2025-03-11T23:56:57.966Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67d0d1f7d1a02ebe59a46fbb"
+  },
+  "user": {
+    "$oid": "67d0b7c383e6a4d9ecf5c22a"
+  },
+  "products": [
+    {
+      "product": {
+        "$oid": "67d0c3aad76626af5dc0170b"
+      },
+      "quantity": 8,
+      "_id": {
+        "$oid": "67d0d1f7d1a02ebe59a46fbc"
+      }
+    }
+  ],
+  "total": 400,
+  "status": "pendiente",
+  "shippingAddress": "casa mia",
+  "date": {
+    "$date": "2025-03-12T00:14:47.812Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67d0d2f5d1a02ebe59a46fc9"
+  },
+  "user": {
+    "$oid": "67d0b6fe8b55788bab6bcec5"
+  },
+  "products": [
+    {
+      "product": {
+        "$oid": "67d0c3aad76626af5dc0170b"
+      },
+      "quantity": 6,
+      "_id": {
+        "$oid": "67d0d2f5d1a02ebe59a46fca"
+      }
+    }
+  ],
+  "total": 300,
+  "status": "pendiente",
+  "shippingAddress": "casa mia",
+  "date": {
+    "$date": "2025-03-12T00:19:01.242Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67d0d368d1a02ebe59a46fea"
+  },
+  "user": {
+    "$oid": "67d0b6fe8b55788bab6bcec5"
+  },
+  "products": [
+    {
+      "product": {
+        "$oid": "67d0c3aad76626af5dc0170b"
+      },
+      "quantity": 4,
+      "_id": {
+        "$oid": "67d0d368d1a02ebe59a46feb"
+      }
+    }
+  ],
+  "total": 200,
+  "status": "pendiente",
+  "shippingAddress": "casa mia",
+  "date": {
+    "$date": "2025-03-12T00:20:56.424Z"
+  },
+  "__v": 0
+}]

@@ -1,0 +1,19 @@
+[{
+  "_id": {
+    "$oid": "67d0c3aad76626af5dc0170b"
+  },
+  "name": "Boliche",
+  "description": "para jugar boliche",
+  "price": 50,
+  "category": {
+    "$oid": "67d0b6c5dda55c1b36d1af1e"
+  },
+  "stock": 65,
+  "status": true,
+  "createdAt": {
+    "$date": "2025-03-11T23:13:46.356Z"
+  },
+  "updatedAt": {
+    "$date": "2025-03-12T00:20:45.048Z"
+  }
+}]

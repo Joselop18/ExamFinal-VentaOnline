@@ -14,7 +14,7 @@ router.post(
         validarJWT,
         validarRol("ADMIN_ROLE"),
         check("name", "Es obligatorio el nombre del Producto").not().isEmpty(),
-        check("category", "El tipo de categoria es obligatorio").not().isEmpty(),
+        check("nameCategory", "El tipo de categoria es obligatorio").not().isEmpty(),
         check("price", "El precio es obligatorio").isFloat({ gt: 0 }).withMessage("El precio debe ser un número mayor a 0"),
         check("stock", "El stock es obligatorio").isInt({ gt: 0 }).withMessage("El stock debe ser un número mayor a 0"),
         validarCampos,
